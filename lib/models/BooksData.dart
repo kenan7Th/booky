@@ -99,7 +99,7 @@ final List<Book> books = [
   ),
   Book(
       id: "4",
-      title: "Learning Python",
+      title: " Python programming Python",
       price: "25.00",
       type: "Programming",
       isAudio: false,
@@ -110,7 +110,7 @@ final List<Book> books = [
       hasSeries: false,
       bookComment: BookComment(
           comment_id: "4", user: "bob", content: "Great for beginners."),
-      summary: "A comprehensive guide to Python programming.",
+      summary: " Python programming.",
       isPurchased: false,
       photoId: "assets/images/page1.jpeg", // Update with the correct path
       isFree: true,
@@ -121,7 +121,7 @@ final List<Book> books = [
       chapters: []),
   Book(
       id: "5",
-      title: "JavaScript Essentials",
+      title: "Learning Python",
       price: "30.00",
       type: "Programming",
       isAudio: false,

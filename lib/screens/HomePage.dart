@@ -78,6 +78,8 @@
 //   }
 // }
 import 'package:booky/models/BooksData.dart';
+
+import 'package:booky/screens/new_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -129,76 +131,70 @@ class HorizintalListviewSizeBox extends StatelessWidget {
     super.key,
   });
 
+  void selectBook(BuildContext ctx) {
+    Navigator.of(ctx).push(MaterialPageRoute(
+      builder: (c) => NewScreen(), // Replace NewScreen with your actual screen
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Container(
-        height: 250,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: books.length,
-          itemBuilder: (context, index) {
-            final mybook = books[index];
-            return Card(
-              elevation: 4, // Adds shadow for a card effect
-              margin: const EdgeInsets.all(8), // Margin around the card
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(8), // Rounded corners for the card
-              ),
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: books.length, // Ensure books is defined
+        itemBuilder: (context, index) {
+          final mybook = books[index]; // Ensure books[index] is valid
+          return InkWell(
+            onTap: () => selectBook(context), // Call selectBook with context
+            splashColor: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              width: 120, // Set a fixed width for the book card
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 8), // Add horizontal spacing between cards
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Container for the image with square aspect ratio
-                  Container(
-                    width: 100,
-                    height: 100, // Set height equal to width for a square
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                            "assets/images/photo1.jpeg"), // Use mybook.id for the image asset path
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(8), // Match card radius
+                      child: Image.asset(
+                        mybook.photoId,
                         fit: BoxFit
-                            .cover, // Cover the entire container while maintaining aspect ratio
+                            .cover, // Ensure the image covers the entire area
                       ),
-                      borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(8)), // Rounded top corners
                     ),
                   ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  // Container for the text
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0), // Padding around text
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start, // Align text to start
-                        children: [
-                          Text(
-                            mybook.title, // Book name
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16), // Bold for book name
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          mybook.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 9, // Adjust font size as needed
                           ),
-                          SizedBox(height: 2), // Space between name and author
-                          Text(mybook.summary), // Author name
-                          SizedBox(height: 2), // Space between author and price
-                          Text(
-                            mybook.price, // Price
-                            style: TextStyle(
-                                color:
-                                    Colors.green), // Optional styling for price
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          mybook.price,
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 10, // Adjust font size as needed
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -211,45 +207,34 @@ class TitleAndArrowContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        //height: 20,
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        alignment: Alignment.center,
-        color: Colors.white10,
-        child: Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween, //space between Items
-          children: [
-            Text(
-              "Books for Winter",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, //bold text
-                  fontSize: 16),
-            ),
-            // ElevatedButton(
-            //     onPressed: () {},
-            //     style: ElevatedButton.styleFrom(
-            //         primary: Colors.white, onPrimary: Colors.black),
-            //     child: Row(
-            //       children: [
-            //         Text(
-            //           "",
-            //         ),
-            //         Icon(Icons.arrow_forward)
-            //       ],
-            //     )
-            //     )
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.arrow_forward,
-                color: Colors.black,
+    return Container(
+      child: Expanded(
+        child: Container(
+          //height: 20,
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          alignment: Alignment.center,
+          color: Colors.white10,
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween, //space between Items
+            children: [
+              Text(
+                "Books for Winter",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, //bold text
+                    fontSize: 16),
               ),
-              padding: EdgeInsets.zero, //removes padding around the icon
-              constraints: BoxConstraints(), //removes any constraints
-            )
-          ],
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.arrow_forward,
+                  color: Colors.black,
+                ),
+                padding: EdgeInsets.zero, //removes padding around the icon
+                constraints: BoxConstraints(), //removes any constraints
+              )
+            ],
+          ),
         ),
       ),
     );

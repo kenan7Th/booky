@@ -184,7 +184,7 @@ class HorizintalListviewSizeBox extends StatelessWidget {
                           mybook.price,
                           style: TextStyle(
                             color: Colors.green,
-                            fontSize: 10, // Adjust font size as needed
+                            fontSize: 10, // Aajust font size as needed
                           ),
                         ),
                       ],

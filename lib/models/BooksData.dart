@@ -82,7 +82,7 @@ final List<Book> books = [
     isAudio: false,
     AIexpectedTime: "6 hours",
     language: "English",
-    rating: "4.8",
+    rating: "4.9",
     isForFamily: true,
     hasSeries: false,
     bookComment: BookComment(

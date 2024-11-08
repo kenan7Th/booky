@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class BookDetailesScreen extends StatelessWidget {
+  final String my_current_bookId;
+  final String my_current_bookTitle;
+  final String my_current_bookphot;
+
+  const BookDetailesScreen(this.my_current_bookId, this.my_current_bookTitle,
+      this.my_current_bookphot);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

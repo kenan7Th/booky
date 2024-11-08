@@ -77,9 +77,10 @@
 //     );
 //   }
 // }
+import 'package:booky/models/Book.dart';
 import 'package:booky/models/BooksData.dart';
 
-import 'package:booky/screens/new_screen.dart';
+import 'package:booky/screens/book_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -131,9 +132,11 @@ class HorizintalListviewSizeBox extends StatelessWidget {
     super.key,
   });
 
-  void selectBook(BuildContext ctx) {
+  void selectBook(BuildContext ctx, Book cbook) {
     Navigator.of(ctx).push(MaterialPageRoute(
-      builder: (c) => NewScreen(), // Replace NewScreen with your actual screen
+      builder: (c) => BookScreen(
+        mycurrentbook: cbook,
+      ), // Replace NewScreen with your actual screen
     ));
   }
 
@@ -147,7 +150,8 @@ class HorizintalListviewSizeBox extends StatelessWidget {
         itemBuilder: (context, index) {
           final mybook = books[index]; // Ensure books[index] is valid
           return InkWell(
-            onTap: () => selectBook(context), // Call selectBook with context
+            onTap: () =>
+                selectBook(context, mybook), // Call selectBook with context
             splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(8),
             child: Container(
@@ -184,7 +188,7 @@ class HorizintalListviewSizeBox extends StatelessWidget {
                           mybook.price,
                           style: TextStyle(
                             color: Colors.green,
-                            fontSize: 10, // Aajust font size as needed
+                            fontSize: 10, // Adjust font size as needed
                           ),
                         ),
                       ],

@@ -80,8 +80,9 @@
 import 'package:booky/models/Book.dart';
 import 'package:booky/models/BooksData.dart';
 
-import 'package:booky/screens/book_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'book_screen.dart';
 
 void main() {
   runApp(HomePage());
@@ -133,11 +134,14 @@ class HorizintalListviewSizeBox extends StatelessWidget {
   });
 
   void selectBook(BuildContext ctx, Book cbook) {
-    Navigator.of(ctx).push(MaterialPageRoute(
-      builder: (c) => BookScreen(
-        mycurrentbook: cbook,
-      ), // Replace NewScreen with your actual screen
-    ));
+    Navigator.of(ctx, rootNavigator: true).pushNamed(
+        //the page which I will openn it
+        BookScreen.screenRoute,
+        arguments: {
+          'id': cbook.id,
+          'title': cbook.title,
+          'photoid': cbook.photoId
+        });
   }
 
   @override

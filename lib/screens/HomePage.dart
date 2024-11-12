@@ -140,7 +140,10 @@ class HorizintalListviewSizeBox extends StatelessWidget {
         arguments: {
           'id': cbook.id,
           'title': cbook.title,
-          'photoid': cbook.photoId
+          'photoid': cbook.photoId,
+          'rating': cbook.rating,
+          'numberOfpages': cbook.numberOfpages,
+          'bookComment': cbook.bookComment.toMap() // Convert comment to a Map
         });
   }
 
@@ -216,34 +219,30 @@ class TitleAndArrowContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Expanded(
-        child: Container(
-          //height: 20,
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          alignment: Alignment.center,
-          color: Colors.white10,
-          child: Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween, //space between Items
-            children: [
-              Text(
-                "Books for Winter",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, //bold text
-                    fontSize: 16),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.arrow_forward,
-                  color: Colors.black,
-                ),
-                padding: EdgeInsets.zero, //removes padding around the icon
-                constraints: BoxConstraints(), //removes any constraints
-              )
-            ],
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      alignment: Alignment.center,
+      color: Colors.white10,
+      child: Row(
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween, // space between items
+        children: [
+          Text(
+            "Books for Winter",
+            style: TextStyle(
+              fontWeight: FontWeight.bold, // bold text
+              fontSize: 16,
+            ),
           ),
-        ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.arrow_forward,
+              color: Colors.black,
+            ),
+            padding: EdgeInsets.zero, // removes padding around the icon
+            constraints: BoxConstraints(), // removes any constraints
+          ),
+        ],
       ),
     );
   }

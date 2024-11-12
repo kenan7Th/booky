@@ -1,3 +1,4 @@
+import 'package:booky/models/BookComment.dart';
 import 'package:flutter/material.dart';
 
 class BookScreen extends StatelessWidget {
@@ -5,55 +6,104 @@ class BookScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // To receive the argument from the previous screen
+    // Receive the argument from the previous screen
     final routeArgument =
-        ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-    //final mycurrent_bookid = routeArgument['id'];
-    final mycurrent_booktitle = routeArgument['title'];
-    final mycurrent_photoid = routeArgument['photoid'];
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final mycurrentBookTitle = routeArgument['title'] as String;
+    final mycurrentPhotoId = routeArgument['photoid'] as String;
+    final mycurrentRating = double.tryParse(routeArgument['rating']) ?? 0.0;
+    final myCurrentNumberOfPages = routeArgument['numberOfpages'];
+
+    // Deserialize comment from the Map
+    final commentMap = routeArgument['bookComment'] as Map<String, dynamic>;
+    final myCurrentComment = BookComment.fromMap(commentMap);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(mycurrent_booktitle!),
+        title: Text(mycurrentBookTitle),
       ),
       body: ListView(
+        padding: const EdgeInsets.all(8.0),
         children: [
-          // Book cover section (Assuming `mycurrent_photoid` is an image URL or asset)
+          // Book cover section
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Circular square image (rounded rectangle)
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      16), // Adjust this for the rounded corners
+                  borderRadius: BorderRadius.circular(16),
                   child: Image.asset(
-                    mycurrent_photoid!, // Replace with your actual image asset or URL
+                    mycurrentPhotoId,
                     width: 80,
                     height: 100,
                     fit: BoxFit.cover,
                   ),
                 ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Author: John Doe',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Genre: Fiction',
+                        style: TextStyle(fontSize: 14, color: Colors.blue),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Rating: $mycurrentRating/5',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-                // Information next to the image
-                SizedBox(width: 10), // Space between image and text
+          // Book pages and eBook section
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Column(
+                  children: [
+                    Icon(Icons.book, size: 24),
+                    Text(
+                      'eBook',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Spacer(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Author: John Doe', // Example text
+                      'Pages: $myCurrentNumberOfPages',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Column(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.family_restroom),
+                      onPressed: () {},
+                      iconSize: 24,
+                    ),
+                    Text(
+                      'For Family',
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Genre: Fiction', // Example text
-                      style: TextStyle(fontSize: 14, color: Colors.blue),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Rating: 4.5/5', // Example text
-                      style: TextStyle(fontSize: 14),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -61,97 +111,19 @@ class BookScreen extends StatelessWidget {
             ),
           ),
 
-          // Book pages and ebook section
+          // Buy/Read button
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Ebook Available Icon and Text
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons
-                            .book, // Replace with a relevant ebook icon if needed
-                        size: 24,
-                      ),
-                      Text(
-                        'eBook',
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      // SizedBox(height: 8), // space between icon and text
-                      // Text(
-                      //   'Available: Yes',
-                      //   style: TextStyle(fontSize: 16),
-                      // ),
-                    ],
-                  ),
-
-                  // Flexible space between the Ebook section and Pages section
-                  Flexible(child: Container()), // This will push the next item
-
-                  // Pages Text
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Pages: 320',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-
-                  // Flexible space between Pages text and Home icon
-                  Flexible(
-                      child:
-                          Container()), // This will push the home icon to the right
-
-                  // Home Icon Button
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.family_restroom), // Home icon
-                          onPressed: () {
-                            // Add functionality for the home button
-                          },
-                          iconSize: 24,
-                        ),
-                        Text(
-                          'For Family',
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Button section (e.g., Purchase or Read Now)
-          Container(
             padding: EdgeInsets.all(8.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                  onPrimary:
-                      Colors.white // Set the button's background color to blue
-                  ),
-              onPressed: () {
-                // Implement the button action here
-              },
+                  primary: Colors.blue, onPrimary: Colors.white),
+              onPressed: () {},
               child: Text('Buy or Read Now'),
             ),
           ),
 
           // About this book section
-          Container(
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,157 +134,70 @@ class BookScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8.0),
                 Text(
-                  'This is a sample book description that will provide details about the content of the book.',
+                  'This is a sample book description that provides details about the content of the book.',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
             ),
           ),
-//type button
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                  onPrimary:
-                      Colors.white // Set the button's background color to blue
-                  ),
-              onPressed: () {
-                // Implement the button action here
-              },
-              child: Text('Buy or Read Now'),
+
+          // Series button
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              primary: Colors.grey,
+              backgroundColor: Colors.white,
+              side: BorderSide(color: Colors.grey),
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            ),
+            onPressed: () {},
+            child: Text(
+              'Series',
+              style: TextStyle(fontSize: 14),
             ),
           ),
 
-//Raitng and revieiws
-          Container(),
-//comments List view and add more
-          Container(),
-//rate thsi ebook container
-          Container(
-              //text1
-              //text 2
-              //five stars icons array
-              //write a review
-              ),
+          // Rating and reviews section
+          // TitleAndArrowWidget('About this Book','' ');
 
-          // More by this author (horizontal list view)
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          // Rating display
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
               children: [
                 Text(
-                  'More by this Author',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  mycurrentRating.toString(),
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8.0),
-                SizedBox(
-                  height: 120,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildAuthorBookItem('Book 1'),
-                      _buildAuthorBookItem('Book 2'),
-                      _buildAuthorBookItem('Book 3'),
-                    ],
-                  ),
+                SizedBox(width: 8),
+                Column(
+                  children: [
+                    Row(
+                      children: List.generate(5, (index) {
+                        if (index < mycurrentRating.floor()) {
+                          return Icon(Icons.star, color: Colors.blue);
+                        } else if (index < mycurrentRating &&
+                            index < mycurrentRating.ceil()) {
+                          return Icon(Icons.star_half, color: Colors.blue);
+                        } else {
+                          return Icon(Icons.star_border, color: Colors.blue);
+                        }
+                      }),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      mycurrentRating.floor().toString(),
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
 
-          // Similar ebooks section
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Similar Ebooks',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8.0),
-                SizedBox(
-                  height: 120,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildSimilarBookItem('Similar Book 1'),
-                      _buildSimilarBookItem('Similar Book 2'),
-                      _buildSimilarBookItem('Similar Book 3'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Google refund policy section
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Google Refund Policy',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  'For information about Google\'s refund policy, please refer to the official guidelines.',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Helper method to create horizontal list items (More by author)
-  Widget _buildAuthorBookItem(String title) {
-    return Container(
-      width: 100,
-      margin: EdgeInsets.only(right: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.network(
-            'https://via.placeholder.com/100', // Placeholder image for book
-            width: 100,
-            height: 150,
-            fit: BoxFit.cover,
-          ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Helper method to create similar books list items
-  Widget _buildSimilarBookItem(String title) {
-    return Container(
-      width: 100,
-      margin: EdgeInsets.only(right: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.network(
-            'https://via.placeholder.com/100', // Placeholder image for book
-            width: 100,
-            height: 150,
-            fit: BoxFit.cover,
-          ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14),
+          // Comment Section
+          Comment(
+            mycurrentRating: mycurrentRating,
+            myCurrentComment: myCurrentComment,
           ),
         ],
       ),
@@ -320,47 +205,112 @@ class BookScreen extends StatelessWidget {
   }
 }
 
-// import 'package:flutter/material.dart';
+class TitleAndArrowWidget extends StatelessWidget {
+  const TitleAndArrowWidget({
+    super.key,
+    required this.mytitle,
+    required this.subtittle,
+  });
 
-// class BookScreen extends StatelessWidget {
-//   // final String bookId;
-//   // final String booktitle;
-//   // const BookScreen({required this.bookId, required this.booktitle});
-//   // final Book mycurrentbook;
+  final String mytitle;
+  final String subtittle;
 
-//   // const BookScreen({required this.mycurrentbook});
-//   static const screenRoute = '/booker';
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            mytitle.toString(),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.arrow_forward, color: Colors.black),
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     //to recieve the argument
-//     final routeArgument =
-//         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-//     final mycurrent_bookid = routeArgument['id'];
-//     final mycurrent_booktitle = routeArgument['title'];
-//     final mycurrent_photoid = routeArgument['photoid'];
+class Comment extends StatelessWidget {
+  final BookComment myCurrentComment;
+  final double mycurrentRating;
 
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(mycurrent_bookid!),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Image.asset(mycurrent_photoid!),
-//             Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: Text(
-//                 mycurrent_booktitle!,
-//                 textAlign: TextAlign.center,
-//                 style: TextStyle(fontSize: 17.0, fontStyle: FontStyle.italic),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  const Comment({
+    super.key,
+    required this.myCurrentComment,
+    required this.mycurrentRating,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage(
+                    "assets/images/page1.jpeg"), // Use the correct image path for user photo
+                radius: 20,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  myCurrentComment.user,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Icon(Icons.more_vert),
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: List.generate(5, (index) {
+              return Icon(
+                index < mycurrentRating ? Icons.star : Icons.star_border,
+                color: Colors.blue,
+                size: 20,
+              );
+            }),
+          ),
+          SizedBox(height: 8),
+          Text(
+            myCurrentComment.content.toLowerCase(),
+            style: TextStyle(fontSize: 14),
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Text('Was this review helpful?'),
+              SizedBox(width: 10),
+              TextButton(
+                onPressed: () {},
+                child: Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text('No'),
+              ),
+            ],
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'See all reviews',
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

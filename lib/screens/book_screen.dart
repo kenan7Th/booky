@@ -1,23 +1,55 @@
 import 'package:booky/models/BookComment.dart';
 import 'package:flutter/material.dart';
 
-class BookScreen extends StatelessWidget {
+class BookScreen extends StatefulWidget {
   static const screenRoute = '/booker';
+
+  @override
+  State<BookScreen> createState() => _BookScreenState();
+}
+
+class _BookScreenState extends State<BookScreen> {
+  int userRating = 0;
+
+  void movetoreviewwriting(BuildContext ctx, String bookid, String author,
+      double myrating, String photoId, String title) {
+    Navigator.of(ctx, rootNavigator: true).pushNamed(
+      // The page which I will open
+      BookScreen.screenRoute,
+      arguments: {
+        'id': bookid,
+        'photoid': photoId,
+        'title': title,
+        'Author': author,
+        'myrating': myrating, // Pass as a double instead of int
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     // Receive the argument from the previous screen
+    // Safely retrieve route arguments and provide a default empty map if null
     final routeArgument =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    final mycurrentBookTitle = routeArgument['title'] as String;
-    final mycurrentPhotoId = routeArgument['photoid'] as String;
-    final mycurrentRating = double.tryParse(routeArgument['rating']) ?? 0.0;
-    final myCurrentNumberOfPages = routeArgument['numberOfpages'];
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+            {};
 
-    // Deserialize comment from the Map
-    final commentMap = routeArgument['bookComment'] as Map<String, dynamic>;
+    // Assign default values for each expected argument to prevent null errors
+    final mycurrentBookTitle =
+        routeArgument['title'] as String? ?? 'Unknown Title';
+    final mycurrentbookId = routeArgument['id'] as String? ?? 'unknown_id';
+    final mycurrentPhotoId = routeArgument['photoid'] as String? ??
+        'assets/images/default_photo.jpg';
+    final mycurrentRating =
+        double.tryParse(routeArgument['rating']?.toString() ?? '0.0') ?? 0.0;
+    final myCurrentNumberOfPages = routeArgument['numberOfpages'] ?? 'N/A';
+    final myCurrentAuthor =
+        routeArgument['Author'] as String? ?? 'Unknown Author';
+
+    // Deserialize comment with a default empty map if bookComment is null
+    final commentMap =
+        routeArgument['bookComment'] as Map<String, dynamic>? ?? {};
     final myCurrentComment = BookComment.fromMap(commentMap);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(mycurrentBookTitle),
@@ -123,23 +155,10 @@ class BookScreen extends StatelessWidget {
           ),
 
           // About this book section
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'About this Book',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  'This is a sample book description that provides details about the content of the book.',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ),
+          TitleAndArrowWidget(
+              mytitle: 'About this Book',
+              subtittle: '',
+              is_button_exsist: true),
 
           // Series button
           OutlinedButton(
@@ -155,9 +174,6 @@ class BookScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14),
             ),
           ),
-
-          // Rating and reviews section
-          // TitleAndArrowWidget('About this Book','' ');
 
           // Rating display
           Padding(
@@ -199,6 +215,73 @@ class BookScreen extends StatelessWidget {
             mycurrentRating: mycurrentRating,
             myCurrentComment: myCurrentComment,
           ),
+
+          // About the Author section
+          TitleAndArrowWidget(
+            mytitle: 'About the Author',
+            subtittle: myCurrentAuthor,
+            is_button_exsist: true,
+          ),
+
+          TitleAndArrowWidget(
+            mytitle: 'express your point of view',
+            subtittle: myCurrentAuthor,
+            is_button_exsist: false,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Your Rating',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  children: List.generate(5, (index) {
+                    return IconButton(
+                      icon: Icon(
+                        index < userRating ? Icons.star : Icons.star_border,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          userRating = index + 1;
+                        }); // Navigate to the review writing page with the updated rating
+                        movetoreviewwriting(
+                            context,
+                            mycurrentbookId,
+                            myCurrentAuthor,
+                            mycurrentRating, // Pass the correct rating type (double)
+                            mycurrentPhotoId,
+                            mycurrentBookTitle);
+                      },
+                    );
+                  }),
+                ), // Write a Review Button
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, onPrimary: Colors.white),
+                    onPressed: () {
+                      // Navigate to the review writing page with the updated rating
+                      movetoreviewwriting(
+                          context,
+                          mycurrentbookId,
+                          myCurrentAuthor,
+                          mycurrentRating, // Pass the correct rating type (double)
+                          mycurrentPhotoId,
+                          mycurrentBookTitle);
+                    },
+                    child: Text('Write a Review'),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -206,31 +289,53 @@ class BookScreen extends StatelessWidget {
 }
 
 class TitleAndArrowWidget extends StatelessWidget {
-  const TitleAndArrowWidget({
-    super.key,
-    required this.mytitle,
-    required this.subtittle,
-  });
+  const TitleAndArrowWidget(
+      {super.key,
+      required this.mytitle,
+      required this.subtittle,
+      required this.is_button_exsist});
 
   final String mytitle;
   final String subtittle;
+  final bool is_button_exsist;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            mytitle.toString(),
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_forward, color: Colors.black),
-            padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    mytitle,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  if (subtittle.isNotEmpty)
+                    Text(
+                      subtittle.toLowerCase(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
+                            .withOpacity(0.5), // Adjust opacity here
+                      ),
+                    ),
+                ],
+              ),
+              if (is_button_exsist)
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.arrow_forward, color: Colors.black),
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
+            ],
           ),
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:booky/models/book_models/Chapter.dart';
 class Book {
   final String id;
   final String title;
+
   final String price;
   final String type;
   final bool isAudio;
@@ -24,6 +25,7 @@ class Book {
   final bool isDisLike;
   final List<Chapter> chapters; // List of Chapter objects
   final int numberOfpages;
+  final String Author;
   // Constructor
   Book(
       {required this.id,
@@ -46,7 +48,8 @@ class Book {
       required this.isLike,
       required this.isDisLike,
       required this.chapters,
-      required this.numberOfpages
+      required this.numberOfpages,
+      required this.Author
       // Initialize chapters
       });
 }

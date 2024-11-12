@@ -1,5 +1,6 @@
 import 'package:booky/screens/HomePage.dart';
 import 'package:booky/screens/book_screen.dart';
+import 'package:booky/screens/write_review_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        BookScreen.screenRoute: (context) => BookScreen()
+        BookScreen.screenRoute: (context) => BookScreen(),
+        WriteReviewScreen.screenRoute: (context) => WriteReviewScreen(),
       },
     );
   }

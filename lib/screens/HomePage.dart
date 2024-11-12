@@ -143,6 +143,7 @@ class HorizintalListviewSizeBox extends StatelessWidget {
           'photoid': cbook.photoId,
           'rating': cbook.rating,
           'numberOfpages': cbook.numberOfpages,
+          'Author': cbook.Author,
           'bookComment': cbook.bookComment.toMap() // Convert comment to a Map
         });
   }

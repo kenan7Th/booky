@@ -1,8 +1,11 @@
 import 'package:booky/models/BookComment.dart';
+import 'package:booky/screens/write_review_screen.dart';
 import 'package:flutter/material.dart';
 
 class BookScreen extends StatefulWidget {
   static const screenRoute = '/booker';
+
+  const BookScreen({super.key});
 
   @override
   State<BookScreen> createState() => _BookScreenState();
@@ -13,9 +16,9 @@ class _BookScreenState extends State<BookScreen> {
 
   void movetoreviewwriting(BuildContext ctx, String bookid, String author,
       double myrating, String photoId, String title) {
-    Navigator.of(ctx, rootNavigator: true).pushNamed(
+    Navigator.of(ctx).pushNamed(
       // The page which I will open
-      BookScreen.screenRoute,
+      WriteReviewScreen.screenRoute,
       arguments: {
         'id': bookid,
         'photoid': photoId,
@@ -29,6 +32,20 @@ class _BookScreenState extends State<BookScreen> {
   @override
   Widget build(BuildContext context) {
     // Receive the argument from the previous screen
+    // final routeArgument =
+    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    // final mycurrentBookTitle = routeArgument['title'] as String;
+    // final mycurrentbookId = routeArgument['id'] as String;
+    // final mycurrentPhotoId = routeArgument['photoid'] as String;
+    // final mycurrentRating = double.tryParse(routeArgument['rating'] ?? '0.0') ??
+    //     0.0; // Ensure it's parsed as double, with default 0.0
+    // final myCurrentNumberOfPages = routeArgument['numberOfpages'];
+    // final myCurrentAuthor = routeArgument['Author'];
+
+    // // Deserialize comment from the Map
+    // final commentMap = routeArgument['bookComment'] as Map<String, dynamic>;
+    // final myCurrentComment = BookComment.fromMap(commentMap);
     // Safely retrieve route arguments and provide a default empty map if null
     final routeArgument =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??

@@ -26,6 +26,7 @@ class Book {
   final List<Chapter> chapters; // List of Chapter objects
   final int numberOfpages;
   final String Author;
+  final int numberOfseries;
   // Constructor
   Book(
       {required this.id,
@@ -49,7 +50,8 @@ class Book {
       required this.isDisLike,
       required this.chapters,
       required this.numberOfpages,
-      required this.Author
+      required this.Author,
+      required this.numberOfseries
       // Initialize chapters
       });
 }

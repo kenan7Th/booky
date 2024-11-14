@@ -24,7 +24,7 @@ class _BookScreenState extends State<BookScreen> {
         'photoid': photoId,
         'title': title,
         'Author': author,
-        'myrating': myrating, // Pass as a double instead of int
+        'rating': myrating, // Pass as a double instead of int
       },
     );
   }
@@ -54,6 +54,8 @@ class _BookScreenState extends State<BookScreen> {
     // Assign default values for each expected argument to prevent null errors
     final mycurrentBookTitle =
         routeArgument['title'] as String? ?? 'Unknown Title';
+    final mycurrentBookSummary =
+        routeArgument['summary'] as String? ?? 'Unknown summary';
     final mycurrentbookId = routeArgument['id'] as String? ?? 'unknown_id';
     final mycurrentPhotoId = routeArgument['photoid'] as String? ??
         'assets/images/default_photo.jpg';
@@ -62,6 +64,9 @@ class _BookScreenState extends State<BookScreen> {
     final myCurrentNumberOfPages = routeArgument['numberOfpages'] ?? 'N/A';
     final myCurrentAuthor =
         routeArgument['Author'] as String? ?? 'Unknown Author';
+    final myCurrenttype = routeArgument['type'] as String? ?? 'Unknown Author';
+    final myCurrentnumberOfseries =
+        routeArgument['numberOfseries'] as String? ?? 'Unknown numberOfseries';
 
     // Deserialize comment with a default empty map if bookComment is null
     final commentMap =
@@ -177,25 +182,68 @@ class _BookScreenState extends State<BookScreen> {
               subtittle: '',
               is_button_exsist: true),
 
-          // Series button
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              primary: Colors.grey,
-              backgroundColor: Colors.white,
-              side: BorderSide(color: Colors.grey),
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            ),
-            onPressed: () {},
+          Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
-              'Series',
-              style: TextStyle(fontSize: 14),
+              mycurrentBookSummary,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                // Genere button
+
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle first button press
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('First Button Pressed')),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    primary: Colors.white, // Background color
+                    onPrimary: Colors.black, // Text color
+                  ),
+                  child: Text(myCurrenttype),
+                ),
+                SizedBox(width: 44),
+                if (myCurrentnumberOfseries != '0')
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle first button press
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('First Button Pressed')),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      primary: Colors.white, // Background color
+                      onPrimary: Colors.black, // Text color
+                    ),
+                    child: Text('series'),
+                  ),
+              ],
             ),
           ),
 
+          //rating and reviews
+          //
+          TitleAndArrowWidget(
+              mytitle: 'Ratings and reviews',
+              subtittle: '',
+              is_button_exsist: true),
           // Rating display
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   mycurrentRating.toString(),
@@ -270,7 +318,8 @@ class _BookScreenState extends State<BookScreen> {
                             context,
                             mycurrentbookId,
                             myCurrentAuthor,
-                            mycurrentRating, // Pass the correct rating type (double)
+                            userRating
+                                .toDouble(), // Pass the correct rating type (double)
                             mycurrentPhotoId,
                             mycurrentBookTitle);
                       },
@@ -300,6 +349,42 @@ class _BookScreenState extends State<BookScreen> {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class ElevatedButtonExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Elevated Buttons Example'),
+      ),
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // First Elevated Button
+
+            SizedBox(width: 16), // Spacing between buttons
+            // Second Elevated Button
+            ElevatedButton(
+              onPressed: () {
+                // Handle second button press
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Second Button Pressed')),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                primary: Colors.green, // Background color
+                onPrimary: Colors.white, // Text color
+              ),
+              child: Text('Button 2'),
+            ),
+          ],
+        ),
       ),
     );
   }

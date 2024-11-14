@@ -19,7 +19,8 @@ final List<Book> books = [
       hasSeries: false,
       bookComment:
           BookComment(comment_id: "1", user: "kenan", content: "content"),
-      summary: "An introduction to Flutter development.",
+      summary:
+          "this book aimed to teach any one ,who is interested in learning Flutter platform .it offeres some codes with its reslutls .the code has been writen by professional developers .",
       isPurchased: true,
       photoId: "assets/images/page1.jpeg", // Update with the correct path
       isFree: false,
@@ -49,7 +50,8 @@ final List<Book> books = [
         ),
       ],
       numberOfpages: 33,
-      Author: "R R Marten"),
+      Author: "R R Marten",
+      numberOfseries: 3),
   // Add more books here
   Book(
       id: "2",
@@ -74,7 +76,8 @@ final List<Book> books = [
       isDisLike: true,
       chapters: [],
       numberOfpages: 85,
-      Author: "R R Marten"),
+      Author: "R R Marten",
+      numberOfseries: 7),
   // Repeat for more books (3 to 7)
   Book(
       id: "3",
@@ -99,7 +102,8 @@ final List<Book> books = [
       isDisLike: false,
       chapters: [],
       numberOfpages: 880,
-      Author: "R R Marten"),
+      Author: "R R Marten",
+      numberOfseries: 0),
   Book(
       id: "4",
       title: " Python programming Python",
@@ -108,7 +112,7 @@ final List<Book> books = [
       isAudio: false,
       AIexpectedTime: "4 hours",
       language: "English",
-      rating: "2",
+      rating: "5",
       isForFamily: true,
       hasSeries: false,
       bookComment: BookComment(
@@ -123,7 +127,8 @@ final List<Book> books = [
       isDisLike: false,
       chapters: [],
       numberOfpages: 85,
-      Author: "R R Marten"),
+      Author: "R R Marten",
+      numberOfseries: 3),
 
   Book(
       id: "5",
@@ -133,7 +138,7 @@ final List<Book> books = [
       isAudio: false,
       AIexpectedTime: "5 hours",
       language: "English",
-      rating: "4.6",
+      rating: "1",
       isForFamily: true,
       hasSeries: false,
       bookComment: BookComment(
@@ -150,7 +155,8 @@ final List<Book> books = [
       isDisLike: false,
       chapters: [],
       numberOfpages: 455,
-      Author: "Dan Brown"),
+      Author: "Dan Brown",
+      numberOfseries: 7),
   Book(
       id: "6",
       title: "React Native Guide",
@@ -159,7 +165,7 @@ final List<Book> books = [
       isAudio: false,
       AIexpectedTime: "8 hours",
       language: "English",
-      rating: "4.9",
+      rating: "2.0",
       isForFamily: true,
       hasSeries: false,
       bookComment: BookComment(
@@ -176,7 +182,8 @@ final List<Book> books = [
       isDisLike: false,
       chapters: [],
       numberOfpages: 77,
-      Author: "R R Marten"),
+      Author: "R R Marten",
+      numberOfseries: 0),
   Book(
       id: "7",
       title: "Kotlin for Beginners",
@@ -185,7 +192,7 @@ final List<Book> books = [
       isAudio: false,
       AIexpectedTime: "7 hours",
       language: "English",
-      rating: "4.7",
+      rating: "3.0",
       isForFamily: true,
       hasSeries: false,
       bookComment: BookComment(
@@ -202,5 +209,6 @@ final List<Book> books = [
       isDisLike: false,
       chapters: [],
       numberOfpages: 2000,
-      Author: "R R Marten"),
+      Author: "Jobran",
+      numberOfseries: 0),
 ];

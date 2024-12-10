@@ -1,17 +1,19 @@
-
 name: booky
 description: A new Flutter project.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.2 <4.0.0'
+  sdk: ">=3.1.2 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  shared_preferences: ^2.1.1
+  image_picker: ^1.0.1
+  http: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -24,5 +26,3 @@ flutter:
   assets:
     - assets/images/photo1.jpeg
     - assets/images/page1.jpeg
-  
-  
